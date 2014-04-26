@@ -24,7 +24,7 @@ namespace ping_pong_control
             this.tables = new List<Table>(TABLE_NUMBER);
 
             for (int i = 0; i < TABLE_NUMBER; i++) {
-                Table table = new Table(i.ToString());
+                Table table = new Table((i+1).ToString());
                 this.tables.Add(table);
 
                 table.start(new TimeSpan(0, 0, (i + 1) * 5));
@@ -36,10 +36,10 @@ namespace ping_pong_control
 
         private void create_tables_view_structure() {
             this.TablesView.Columns.Clear();
-
-            this.TablesView.Columns.Add("name", "Name", 20);
+            
+            this.TablesView.Columns.Add("name", "Name", 100);
             this.TablesView.Columns.Add("status", "Status", 100);
-            this.TablesView.Columns.Add("start_time", "Start time", 200);
+            this.TablesView.Columns.Add("start_time", "Start time", 100);
             this.TablesView.Columns.Add("duration", "Duration", 100);
             this.TablesView.Columns.Add("left", "Left", 100);
 
@@ -64,20 +64,24 @@ namespace ping_pong_control
                 switch (table.check_status()) {
                     case Table.Status.Busy:
                         item.BackColor = Color.FromArgb(255, 255, 200);
+                        item.ForeColor = Color.FromArgb(64, 64, 0);
                         break;
                     case Table.Status.Free:
                         item.BackColor = Color.FromArgb(200, 255, 200);
+                        item.ForeColor = Color.FromArgb(0, 64, 0);
                         break;
                     case Table.Status.TimesUp:
                         item.BackColor = Color.FromArgb(255, 150, 150);
+                        item.ForeColor = Color.FromArgb(64, 0, 0);
                         break;
                 }
 
+                item.ImageKey = "table";
                 item.SubItems[0].Text = table.name;
                 item.SubItems[1].Text = table.status.ToString();
-                item.SubItems[2].Text = table.start_time.ToString();
-                item.SubItems[3].Text = table.duration.ToString();
-                item.SubItems[4].Text = table.time_left.ToString();
+                item.SubItems[2].Text = table.start_time.ToString("hh\\:mm\\:ss");
+                item.SubItems[3].Text = table.duration.ToString("hh\\:mm\\:ss");
+                item.SubItems[4].Text = table.time_left.ToString("hh\\:mm\\:ss");
             }
         }
 
